@@ -63,8 +63,8 @@ public class HologramManager extends Ticked {
     }
 
     private void updateVisibility() {
-        for (Hologram hologram : Hologram.getCachedHolograms()) {
-            updateVisibility(hologram);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            updateVisibility(player);
         }
     }
 
@@ -75,12 +75,20 @@ public class HologramManager extends Ticked {
     }
 
     public void updateVisibility(@NonNull Player player) {
+        S.entity(player, () -> updateVisibilityNow(player));
+    }
+
+    private void updateVisibilityNow(@NonNull Player player) {
         for (Hologram hologram : Hologram.getCachedHolograms()) {
-            updateVisibility(player, hologram);
+            updateVisibilityNow(player, hologram);
         }
     }
 
     public void updateVisibility(@NonNull Player player, @NonNull Hologram hologram) {
+        S.entity(player, () -> updateVisibilityNow(player, hologram));
+    }
+
+    private void updateVisibilityNow(@NonNull Player player, @NonNull Hologram hologram) {
         if (hologram.isDisabled()) {
             return;
         }
